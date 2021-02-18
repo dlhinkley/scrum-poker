@@ -1,10 +1,11 @@
 <ul>
-  <li class="text" *ngFor="let item of items | async">
-    {{item.id}}
-		<ul>
-      <li class="text" *ngFor="let user of item.users | async">
-      </li>
-		</ul>
+  <li class="text" *ngFor="let game of items | async">
+    {{game.name}}
+  </li>
+</ul> 
+<ul>
+  <li class="text" *ngFor="let user of users | async">
+    {{user}}
   </li>
 </ul> 
 

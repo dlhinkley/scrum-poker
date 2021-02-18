@@ -11,11 +11,12 @@ import { User } from './user';
 })
 export class AppComponent {
   items: Observable<any[]>;
+  users: Observable<any[]>;
   title = 'scrum-poker';
   constructor(db: DatabaseService) {
     let game: Game = {
        id: 'first',
-	   users: [
+		users: [
           <User>{
             name: 'Sam',
 			points: 5
@@ -29,6 +30,6 @@ export class AppComponent {
 	//db.createGame(game)
 
     this.items = db.getGames();
-	console.log('items=', db.get())
+	this.users = db.getUsers('first');
   }
 }

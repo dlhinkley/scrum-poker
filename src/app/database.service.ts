@@ -11,16 +11,16 @@ export class DatabaseService {
   constructor(private firestore: AngularFirestore) { }
 
   createGame(game: Game) {
-    return new Promise<any>((resolve, reject) =>{
-        this.firestore
+    return this.firestore
             .collection(this.collection)
             .add(game)
-            .then(res => {}, err => reject(err));
-    });
+            .then(ref => {
+				return ref.id;
+			});
   }
 
- 	get() {
-	    return this.firestore.collection(this.collection);
+ 	getUsers(gameId: string) {
+	    return this.firestore.collection(this.collection).valueChanges();
 	};
 
  	getGames() {
