@@ -1,6 +1,10 @@
 <ul>
   <li class="text" *ngFor="let item of items | async">
-    {{item.name}}
+    {{item.id}}
+		<ul>
+      <li class="text" *ngFor="let user of item.users | async">
+      </li>
+		</ul>
   </li>
 </ul> 
 

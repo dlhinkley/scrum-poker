@@ -19,7 +19,11 @@ export class DatabaseService {
     });
   }
 
-  	getGames() {
+ 	get() {
+	    return this.firestore.collection(this.collection);
+	};
+
+ 	getGames() {
 	    return this.firestore.collection(this.collection).valueChanges();
 	};
 }

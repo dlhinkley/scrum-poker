@@ -29,6 +29,6 @@ export class AppComponent {
 	//db.createGame(game)
 
     this.items = db.getGames();
-
+	console.log('items=', db.get())
   }
 }
