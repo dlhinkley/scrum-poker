@@ -1,3 +1,4 @@
+
 import { Injectable } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 
@@ -7,4 +8,11 @@ import { CookieService } from 'ngx-cookie-service';
 export class GameService {
 
   constructor(private cookies: CookieService) { }
+
+	getGameId(): string {
+		return this.cookies.get('gameId');
+	}
+	setGameId(gameId: string): void {
+    this.cookies.set('gameId', gameId);
+	}
 }
