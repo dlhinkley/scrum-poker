@@ -11,10 +11,16 @@ import { AngularFireModule } from '@angular/fire';
 import { AngularFireAnalyticsModule } from '@angular/fire/analytics';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { environment } from '../environments/environment';
+import { AddGameComponent } from './add-game/add-game.component';
+import { AddUserComponent } from './add-user/add-user.component';
+import { PlayComponent } from './play/play.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    AddGameComponent,
+    AddUserComponent,
+    PlayComponent,
   ],
   imports: [
     BrowserModule,

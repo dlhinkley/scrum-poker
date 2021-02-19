@@ -13,6 +13,12 @@ export class GameService {
 		return this.cookies.get('gameId');
 	}
 	setGameId(gameId: string): void {
-    this.cookies.set('gameId', gameId);
+      this.cookies.set('gameId', gameId);
+	}
+	getUserId(): string {
+		return this.cookies.get('userId');
+	}
+	setUserId(userId: string): void {
+      this.cookies.set('userId', userId);
 	}
 }
