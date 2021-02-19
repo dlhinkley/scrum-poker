@@ -31,7 +31,7 @@ export class DatabaseService {
 	    return this.firestore.collection('user').valueChanges();
 	};
 
- 	getGames() {
-	    return this.firestore.collection('game').valueChanges();
+ 	getGame(gameId: string) {
+	    return this.firestore.collection('game').doc(gameId).get()
 	};
 }

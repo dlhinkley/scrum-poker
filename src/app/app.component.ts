@@ -14,8 +14,6 @@ import { User } from './user';
 
 export class AppComponent {
   gameId: string = ''; 
-   items: Observable<any[]>;
-   users: Observable<any[]>;
    title = 'scrum-poker';
    constructor(
 		       private router: Router,
@@ -30,8 +28,6 @@ export class AppComponent {
 		} else if (!userId) {
           this.router.navigate(['add-user'])
 		}
-        this.items = databaseService.getGames();
-        this.users = databaseService.getUsers('first');
    }
    ngOnInit() {
    }

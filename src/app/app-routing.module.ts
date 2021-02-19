@@ -14,7 +14,7 @@ const routes: Routes = [
      component: AddUserComponent,
   },
   {
-    path: 'play/:parameter',
+    path: 'play/:gameId',
     component: PlayComponent,
   },
 ];
