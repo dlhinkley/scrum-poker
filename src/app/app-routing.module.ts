@@ -5,6 +5,11 @@ import { AddUserComponent } from './add-user/add-user.component';
 import { PlayComponent } from './play/play.component';
 
 const routes: Routes = [
+   { 
+      path: '',
+	  redirectTo: '/play/null', 
+	  pathMatch: 'full'
+   },
   {
 	 path: 'add-game',
      component: AddGameComponent,

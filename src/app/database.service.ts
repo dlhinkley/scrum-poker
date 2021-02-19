@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { Observable } from 'rxjs';
 import { Game } from './game';
 import { User } from './user';
 
@@ -27,10 +28,13 @@ export class DatabaseService {
 			});
   }
  
- 	getUsers(gameId: string) {
-	    return this.firestore.collection('user').valueChanges();
+ 	getUsers(gameId: string): Observable<User[]> {
+	    return this.firestore.collection('user', ref => ref.where('gameId', '==', gameId)).valueChanges();
 	};
 
+ 	watchGame(gameId: string) {
+	    return this.firestore.collection('game').doc(gameId).valueChanges();
+	};
  	getGame(gameId: string) {
 	    return this.firestore.collection('game').doc(gameId).get()
 	};

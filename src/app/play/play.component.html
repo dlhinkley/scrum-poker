@@ -1,1 +1,7 @@
-<p>{{game.name}}</p>
+<h1>Game: {{game.name | async}}</h1>
+
+<ul>
+  <li class="text" *ngFor="let user of users | async">
+    {{user.name}}
+  </li>
+</ul> 

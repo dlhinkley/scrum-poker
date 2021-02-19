@@ -20,6 +20,7 @@ export class AppComponent {
                private databaseService: DatabaseService,
                private gameService: GameService
    ) {
+		   /*
         let gameId = this.gameService.getGameId(); 
         let userId = this.gameService.getUserId(); 
         console.log('gameId=', this.gameId)
@@ -28,6 +29,7 @@ export class AppComponent {
 		} else if (!userId) {
           this.router.navigate(['add-user'])
 		}
+	   */
    }
    ngOnInit() {
    }

@@ -24,6 +24,7 @@ export class AddGameComponent implements OnInit {
   ngOnInit(): void {
   }
   createGame() {
+        this.game.show = false;
 		this.databaseService.createGame(this.game)
 		 .then(gameId => {
 			console.log('gameId=', gameId)
