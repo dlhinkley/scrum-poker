@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
 import { DatabaseService } from './database.service';
+import { GameService } from './game.service';
 import { Game } from './game';
 import { User } from './user';
 
@@ -10,12 +11,18 @@ import { User } from './user';
 	styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
+  gameId: string; 
+  game: Game = <Game>{};;
+
 	items: Observable<any[]>;
-	//users: Observable<any[]>;
+	users: Observable<any[]>;
 	title = 'scrum-poker';
-	constructor(db: DatabaseService) {
+	constructor(
+					private databaseService: DatabaseService,
+					private gameService: GameService
+	) {
 		let game: Game = {
-			 id: 'first',
+			 name: 'first',
 		users: [
 					<User>{
 						name: 'Sam',
@@ -27,9 +34,21 @@ export class AppComponent {
 			}
 		 ]
 	}
-	//db.createGame(game)
-
-		this.items = db.getGames();
-	//this.users = db.getUsers('first');
+	//databaseService.createGame(game)
+    this.gameId = gameService.getGameId(); 
+		console.log('gameId=', this.gameId)
+		this.items = databaseService.getGames();
+	  this.users = databaseService.getUsers('first');
+	}
+	createGame() {
+    this.databaseService.createGame(this.game)
+		   .then(gameId => {
+			    this.gameId = gameId;
+		      console.log('gameId=', this.gameId)
+		      this.gameService.setGameId(this.gameId);
+			 });
+	}
+	onSubmit() {
+    this.createGame()
 	}
 }

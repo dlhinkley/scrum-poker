@@ -1,11 +1,29 @@
-<ul>
-  <li class="text" *ngFor="let game of items | async">
-    {{game.name}}
-  </li>
-</ul> 
-<ul>
-  <li class="text" *ngFor="let user of users | async">
-    {{user}}
-  </li>
-</ul> 
-
+<div class="container">
+    <div [hidden]="gameId">
+       <h1>Create Game</h1>
+		   <form (ngSubmit)="onSubmit()" #heroForm="ngForm">
+					<div class="form-group">
+						 <label for="power">Name</label>
+						 <input type="text" class="form-control" id="name"
+							 required
+							 [(ngModel)]="game.name" name="name"
+							 #name="ngModel">
+						 <div [hidden]="name.valid || name.pristine"
+										 class="alert alert-danger">
+									Name is required
+						 </div>
+					 </div>
+					 <button type="button" class="btn btn-default" (click)="createGame()">Create</button>
+		   </form>
+    </div>
+				<ul>
+					<li class="text" *ngFor="let game of items | async">
+						{{game.name}}
+					</li>
+				</ul> 
+				<ul>
+					<li class="text" *ngFor="let user of users | async">
+						{{user}}
+					</li>
+				</ul> 
+</div>
