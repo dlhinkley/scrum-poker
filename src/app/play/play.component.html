@@ -1,7 +1,20 @@
-<h1>Game: {{game.name | async}}</h1>
+<h1>
+		Game: {{game.name}}</h1>
+<h3>User: {{user.name}}</h3>
 
 <ul>
-  <li class="text" *ngFor="let user of users | async">
-    {{user.name}}
+  <li class="text" *ngFor="let user of users ">
+		  {{user.name}} {{user.points > -1 ? 'Y' : 'X' }} {{game.show ? user.points: '' }}
   </li>
 </ul> 
+<div *ngIf="game.show">
+  Avg: {{average}}
+</div>
+<ul>
+  <li class="text" *ngFor="let point of points">
+		  <button (click)="setPoints($event, point)">{{point}}</button>
+  </li>
+</ul> 
+<button (click)="togglePoints($event)">Show</button>
+<p>
+<button (click)="clrPoints($event)">New</button>
