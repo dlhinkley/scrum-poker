@@ -35,6 +35,26 @@ export class DatabaseService {
         .doc(gameId)
         .update({ show: show});
     }
+    deleteGame(gameId: string) {
+
+        return this.db
+        .collection('game')
+        .doc(gameId)
+        .delete()
+        .then(() => {
+            return this.db
+            .collection('user', ref => ref.where('gameId', '==', gameId))
+            .get()
+            .subscribe(response => {
+                const batch = this.db.firestore.batch();
+                response.docs.forEach((doc) => {
+                    batch.delete(doc.ref);	
+                });
+                return batch.commit();
+            });
+        })
+    }
+
     clrPoints(gameId: string) {
 
         return this.db

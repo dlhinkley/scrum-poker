@@ -20,16 +20,7 @@ export class AppComponent {
         private databaseService: DatabaseService,
         private gameService: GameService
     ) {
-        /*
-           let gameId = this.gameService.getGameId(); 
-           let userId = this.gameService.getUserId(); 
-           console.log('gameId=', this.gameId)
-           if (!gameId) {
-           this.router.navigate(['add-game'])
-           } else if (!userId) {
-           this.router.navigate(['add-user'])
-           }
-           */
+
     }
     ngOnInit() {
     }

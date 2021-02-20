@@ -1,35 +1,42 @@
 <div class="container-fluid">
-    <div class="row border rounded">
+    <div class="row border rounded bg-light">
         <div class="col">
            <h3>Game: {{game.name}}</h3>
         </div>
-        <div class="col-4">
-            <button class="btn btn-success" (click)="togglePoints($event)">{{game.show ? 'Display Scores' : 'Hide Scores'}}</button>
+        <div class="col-2">
+            <button class="btn btn-success" (click)="togglePoints($event)">{{game.show ? 'Hide Scores' :  'Display Scores' }}</button>
         </div>
-        <div class="col-4">
+        <div class="col-2">
             <button class="btn btn-secondary" (click)="clrPoints($event)">New Round</button>
+        </div>
+        <div class="col-2">
+            <button class="btn btn-secondary" (click)="newGame($event)">New Game</button>
         </div>
     </div>
     <p>
-    <div class="row border-top border-left border-right rounded-top">
-        <h5>{{game.show ? 'Voting...' : 'Score: ' + average }}</h5>
+    <div class="row border-top border-left border-right rounded-top bg-light">
+        <div class="col">
+           <h5>{{game.show ? 'Score: ' + average : 'Voting...' }}</h5>
+        </div>
     </div>
-    <div class="row border-bottom border-left border-right  rounded-bottom">
-        <div class="col" *ngFor="let card of cards">
+    <div class="row border-bottom border-left border-right  rounded-bottom bg-light">
+        <div class="col-1" *ngFor="let card of cards">
             <button
                 class="cards btn"
                 [ngClass]="card.selected ? 'btn-info' : 'btn-outline-info'"
                 [innerHTML]="card.display">
             </button>
-            <p>{{card.user.name}}</p>
+            <div class="username text-center">{{card.user.name}}</div>
         </div>
     </div>
     <p>
-    <div class="row border-top border-left border-right rounded-top">
-        <h5>User: {{user.name}}</h5>
+    <div class="row border-top border-left border-right rounded-top bg-light">
+        <div class="col">
+            <h5>{{user.name}}: {{game.show ? 'Score Locked' : 'Select Value'}}</h5>
+        </div>
     </div>
-    <div class="row border-bottom border-left border-right  rounded-bottom">
-        <div class="col" *ngFor="let point of points; let p = index">
+    <div class="row border-bottom border-left border-right  rounded-bottom bg-light">
+        <div class="col-1" *ngFor="let point of points; let p = index">
             <button [disabled]="game.show"
              class="cards btn" 
              [ngClass]="point.selected ? 'btn-primary' : 'btn-outline-primary'"

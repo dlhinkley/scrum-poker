@@ -45,9 +45,9 @@ export class PlayComponent implements OnInit {
            let display = '';
            // In show mode, display points or X
            if (this.game.show) {
-               display = (user.points > -1 ? user.points + '' : 'X');
-           } else {
                display = (user.points > -1  ? '&#x2713;' : '?');
+           } else {
+               display = (user.points > -1 ? user.points + '' : 'X');
            }
            const selected = (user.points > -1);
            const card = <Card> {
@@ -57,6 +57,11 @@ export class PlayComponent implements OnInit {
            }
            this.cards.push(card);
        });
+    }
+    newGame(event: any) {
+        this.databaseService.deleteGame(this.gameId);
+        this.gameService.deleteGameId();
+        this.router.navigate(['add-game'])
     }
     updatePoints() {
         this.points.forEach(point => {
