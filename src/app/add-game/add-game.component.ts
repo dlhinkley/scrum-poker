@@ -19,6 +19,7 @@ export class AddGameComponent implements OnInit {
         private databaseService: DatabaseService,
         private gameService: GameService
     ) { 
+        console.log('add-game constructor');
     }
 
     ngOnInit(): void {

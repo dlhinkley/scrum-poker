@@ -29,7 +29,7 @@ export class AddUserComponent implements OnInit {
         .then(userId => {
             console.log('userId=', userId)
             this.gameService.setUserId(userId);
-            this.router.navigate(['play/' + this.user.gameId]);
+            this.router.navigate(['play/' + this.user.gameId + '/']);
         });
     }
     onSubmit() {

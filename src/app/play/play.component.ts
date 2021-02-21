@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
+import { mergeMap } from 'rxjs/operators'
 import { AngularFirestore } from '@angular/fire/firestore';
 import { DatabaseService } from '../database.service';
 import { GameService } from '../game.service';
@@ -45,9 +46,9 @@ export class PlayComponent implements OnInit {
            let display = '';
            // In show mode, display points or X
            if (this.game.show) {
-               display = (user.points > -1  ? '&#x2713;' : '?');
-           } else {
                display = (user.points > -1 ? user.points + '' : 'X');
+           } else {
+               display = (user.points > -1  ? '&#x2713;' : '?');
            }
            const selected = (user.points > -1);
            const card = <Card> {
@@ -77,6 +78,7 @@ export class PlayComponent implements OnInit {
         this.databaseService.setPoints(this.userId, this.points[p].value)
     }
     clrPoints(event: any): void {
+        this.databaseService.setShow(this.gameId, false);
         this.databaseService.clrPoints(this.gameId);
     }
 
@@ -100,59 +102,74 @@ export class PlayComponent implements OnInit {
             }
         });
     }
+    handleGames(doc: any) {
+        console.log('handleGames'); 
+        // If game found
+        if (doc) {
+            console.log('games=', doc);
+            this.game = <Game>doc;
+            this.gameService.setGameId(this.gameId);
+            return true;
+        } else {
+            console.log('no game found, navigating to add game');
+            this.router.navigate(['add-game']);
+            return false;
+        }
+    }
+    handleUsers(users: any) {
+        console.log('handleUsers'); 
+        console.log('users=', users);
+        
+        // See if we  have a userid
+        this.userId = this.gameService.getUserId();
+        console.log('userId=', this.userId);
+        console.log('gameId=', this.gameId);
+        if (!this.userId) {
+             console.log('forwarding to add user');
+              this.router.navigate(['add-user']);
+        }
+
+        this.users = <User[]>users;
+        this.user = <User>{};
+        this.users.forEach(user => {
+            console.log('this.user', user);
+            // Save my user
+            if (user.docId == this.userId && user.gameId === this.gameId) {
+                this.user = <User> user;
+                this.updatePoints();
+            }
+        });
+        // If my user not found, add it
+        if (!this.user.docId) {
+            this.gameService.deleteUserId();
+            console.log('user not found, navigate to add-user');
+            this.router.navigate(['add-user'])
+        }
+        this.setAverage();
+        this.updateCards();
+    }
     ngOnInit(): void {
         this.activatedRoute.params.subscribe(parameter => {
             this.gameId = parameter.gameId;
+            console.log('ngOnInit gameId=', this.gameId);
+
             // If no gameid, navigate to create a game
             // If you don't have a user id yet, navigate to create a user 
-            this.userId = this.gameService.getUserId();
-            if (!this.userId) {
-                this.router.navigate(['add-user'])
-            }
+
 
             // Get the game
-            this.databaseService.getGame(this.gameId)
-            .subscribe((doc) => {
-                // If game found
-                if (doc.data()) {
-                    console.log('this.game', doc.data());
-                    this.gameService.setGameId(this.gameId);
-                } else {
-                    this.router.navigate(['add-game'])
-                }
-            });
-
-            // Get the user
-            this.databaseService.getUser(this.userId)
-            .subscribe((doc) => {
-                // If user found
-                if (doc.data()) {
-                    console.log('this.user', doc.data());
-                    this.user = <User> doc.data();
-                    this.updatePoints();
-                    if (this.user.gameId !== this.gameId) {
-                        this.router.navigate(['add-user'])
-                    }
-                } else {
-                    this.router.navigate(['add-user'])
-                }
-            });
-
-            // Load the users (including changes)
-            this.databaseService.getUsers(this.gameId)
-            .subscribe((users ) => {
-                console.log('users=', users);
-                this.users = <User[]>users;
-                this.setAverage();
-                this.updateCards();
-            });
-
-            // Load and watch game for changes
             this.databaseService.watchGame(this.gameId)
-            .subscribe((doc) => {
-                console.log('games=', doc);
-                this.game = <Game>doc;
-            });;
+            .subscribe((doc: any) => {
+                const success = this.handleGames(doc)
+
+                if (success) {
+                    // Load the users (including changes)
+                    this.databaseService.getUsers(this.gameId)
+                    .subscribe((doc: any) => {
+                        this.handleUsers(doc)
+                    });
+                }
+             });
         });
     }
 }

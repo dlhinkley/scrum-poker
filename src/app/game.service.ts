@@ -15,6 +15,9 @@ export class GameService {
     setGameId(gameId: string): void {
         this.cookies.set('gameId', gameId);
     }
+     deleteUserId(): void {
+         this.cookies.delete('userId');
+    }
     deleteGameId(): void {
          this.cookies.delete('gameId');
     }
@@ -22,6 +25,7 @@ export class GameService {
         return this.cookies.get('userId');
     }
     setUserId(userId: string): void {
+        console.log('setUserId=', userId);
         this.cookies.set('userId', userId);
     }
 }
