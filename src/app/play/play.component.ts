@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { mergeMap } from 'rxjs/operators'
 import { AngularFirestore } from '@angular/fire/firestore';
 import { DatabaseService } from '../database.service';
@@ -16,8 +16,6 @@ import { Point } from '../point';
     styleUrls: ['./play.component.scss']
 })
 export class PlayComponent implements OnInit {
-    gameId: string = '';
-    userId: string = '';
     users: User[] = <User[]>{};
     game: Game = <Game>{};
     user: User = <User>{};
@@ -60,7 +58,7 @@ export class PlayComponent implements OnInit {
        });
     }
     newGame(event: any) {
-        this.databaseService.deleteGame(this.gameId);
+        this.databaseService.deleteGame(this.game.docId);
         this.gameService.deleteGameId();
         this.router.navigate(['add-game'])
     }
@@ -75,16 +73,16 @@ export class PlayComponent implements OnInit {
         });
         this.updateCards();
         this.points[p].selected = true;
-        this.databaseService.setPoints(this.userId, this.points[p].value)
+        this.databaseService.setPoints(this.user.docId, this.points[p].value)
     }
     clrPoints(event: any): void {
-        this.databaseService.setShow(this.gameId, false);
-        this.databaseService.clrPoints(this.gameId);
+        this.databaseService.setShow(this.game.docId, false);
+        this.databaseService.clrPoints(this.game.docId);
     }
 
     togglePoints(event: any): void {
         this.updateCards();
-        this.databaseService.setShow(this.gameId, ! this.game.show);
+        this.databaseService.setShow(this.game.docId, ! this.game.show);
     }
 
     setAverage(): void {
@@ -106,36 +104,37 @@ export class PlayComponent implements OnInit {
         console.log('handleGames'); 
         // If game found
         if (doc) {
-            console.log('games=', doc);
+            console.log('handleGames doc=', doc);
             this.game = <Game>doc;
-            this.gameService.setGameId(this.gameId);
+            this.gameService.setGameId(this.game.docId);
             return true;
         } else {
-            console.log('no game found, navigating to add game');
+            console.log('handleGames no game found, navigating to add game');
             this.router.navigate(['add-game']);
             return false;
         }
     }
     handleUsers(users: any) {
         console.log('handleUsers'); 
-        console.log('users=', users);
+        console.log('handleUsers users=', users);
         
         // See if we  have a userid
-        this.userId = this.gameService.getUserId();
-        console.log('userId=', this.userId);
-        console.log('gameId=', this.gameId);
-        if (!this.userId) {
-             console.log('forwarding to add user');
+        const userId = this.gameService.getUserId();
+        console.log('handleUsers userId=', userId);
+        console.log('handleUsers gameId=', this.game.docId);
+        if (!userId) {
+             console.log('handleUsers no userId, forwarding to add user');
               this.router.navigate(['add-user']);
         }
 
         this.users = <User[]>users;
         this.user = <User>{};
         this.users.forEach(user => {
-            console.log('this.user', user);
+            console.log('handleUsers user', user);
             // Save my user
-            if (user.docId == this.userId && user.gameId === this.gameId) {
+            if (user.docId == userId && user.gameId === this.game.docId) {
                 this.user = <User> user;
+                console.log('handleUsers found user', user);
                 this.updatePoints();
             }
         });
@@ -150,26 +149,33 @@ export class PlayComponent implements OnInit {
     }
     ngOnInit(): void {
         this.activatedRoute.params.subscribe(parameter => {
-            this.gameId = parameter.gameId;
-            console.log('ngOnInit gameId=', this.gameId);
+            const gameId = parameter.gameId;
+            if (gameId === 'null') {
+                console.log('ngOnInit gameId is null, navigate to add game');
+                this.router.navigate(['add-game']);
 
-            // If no gameid, navigate to create a game
-            // If you don't have a user id yet, navigate to create a user 
+            } else {
+
+                console.log('ngOnInit gameId=', gameId);
+
+                // If no gameid, navigate to create a game
+                // If you don't have a user id yet, navigate to create a user 
 
 
-            // Get the game
-            this.databaseService.watchGame(this.gameId)
-            .subscribe((doc: any) => {
-                const success = this.handleGames(doc)
+                // Get the game
+                this.databaseService.watchGame(gameId)
+                .subscribe((doc: any) => {
+                    const success = this.handleGames(doc)
 
-                if (success) {
-                    // Load the users (including changes)
-                    this.databaseService.getUsers(this.gameId)
-                    .subscribe((doc: any) => {
-                        this.handleUsers(doc)
-                    });
-                }
-             });
+                    if (success) {
+                        // Load the users (including changes)
+                        this.databaseService.getUsers(gameId)
+                        .subscribe((doc: any) => {
+                            this.handleUsers(doc)
+                        });
+                    }
+                 });
+            }
         });
     }
 }

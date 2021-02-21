@@ -79,12 +79,14 @@ export class DatabaseService {
     };
 
     watchGame(gameId: string) {
-        return this.db.doc('game/' + gameId).valueChanges()
+        return this.db.doc('game/' + gameId).valueChanges({idField: 'docId'})
     };
+    /*
     getUser(userId: string) {
         return this.db.collection('user').doc(userId).get()
     };
     getGame(gameId: string) {
         return this.db.collection('game').doc(gameId).get()
     };
+    */
 }
