@@ -1,7 +1,7 @@
 <div class="container-fluid">
     <div class="row border rounded bg-light">
         <div class="col">
-           <h3>Game: {{game.name}}</h3>
+           <h3 id="game-name">Game: {{game.name}}</h3>
         </div>
         <div class="col-2">
             <button class="btn btn-success" (click)="togglePoints($event)">{{game.show ? 'Hide Scores' :  'Display Scores' }}</button>

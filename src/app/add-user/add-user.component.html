@@ -1,5 +1,5 @@
 <div class="container">
-    <h1>Create User</h1>
+    <h1 id="title">Create User</h1>
     <form (ngSubmit)="onSubmit()" #heroForm="ngForm">
         <div class="form-group">
             <div class="form-group row">
@@ -21,7 +21,7 @@
                 </div>
             </div>
         </div>
-        <button [disabled]="!name.valid" type="button" class="btn btn-default" (click)="createUser()">Create</button>
+        <button id="submit" [disabled]="!name.valid" type="button" class="btn btn-default" (click)="createUser()">Create</button>
     </form>
 </div>
 
