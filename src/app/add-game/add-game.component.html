@@ -8,14 +8,14 @@
                        class="form-control" 
                        id="name"
                        required minlength="3"
-                                maxlength="40"
+                                maxlength="20"
                                 pattern="^[a-zA-Z0-9 ]+$"
                                 [(ngModel)]="game.name" 
                                 name="name"
                                 #name="ngModel">
                 <div [hidden]=" name.valid || name.pristine"
                                 class="alert alert-danger">
-                    Name of only letters numbers and spaces is required
+                    Name of only lest than 20 letters numbers and spaces is allowed
                 </div>
             </div>
         </div>

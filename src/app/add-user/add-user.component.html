@@ -1,5 +1,5 @@
 <div class="container">
-    <h1 id="title">Create User</h1>
+    <h1 id="user-title">Create User</h1>
     <form (ngSubmit)="onSubmit()" #heroForm="ngForm">
         <div class="form-group">
             <div class="form-group row">
@@ -9,14 +9,14 @@
                            class="form-control" 
                            id="name"
                            required minlength="3"
-                                    maxlength="40"
-                                    pattern="^[a-zA-Z0-9 ]+$"
+                                    maxlength="10"
+                                    pattern="^[a-zA-Z0-9]+$"
                                     [(ngModel)]="user.name" 
                                     name="name"
                                     #name="ngModel">
                     <div [hidden]=" name.valid || name.pristine"
                                     class="alert alert-danger">
-                        Name of only letters numbers and spaces is required
+                        Single name of only ten letters or numbers is allowed
                     </div>
                 </div>
             </div>

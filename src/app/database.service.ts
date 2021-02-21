@@ -75,7 +75,7 @@ export class DatabaseService {
         .update({ points: points});
     }
     getUsers(gameId: string): Observable<unknown[]> {
-        return this.db.collection('user', ref => ref.where('gameId', '==', gameId)).valueChanges({idField: 'docId'});
+        return this.db.collection('user', ref => ref.where('gameId', '==', gameId).limit(10)).valueChanges({idField: 'docId'});
     };
 
     watchGame(gameId: string) {
