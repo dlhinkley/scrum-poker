@@ -1,13 +1,13 @@
 <div class="container-fluid">
     <div class="row border rounded bg-light">
         <div class="col">
-           <h3 id="game-name">Game: {{game.name}}</h3>
+            <h3 id="game-name">Game: {{game.name}}</h3>
         </div>
         <div class="col-2">
-            <button class="btn btn-success" (click)="togglePoints($event)">{{game.show ? 'Hide Scores' :  'Display Scores' }}</button>
+            <button id="show-button" class="btn btn-success" (click)="togglePoints($event)">{{game.show ? 'Hide Scores' :  'Display Scores' }}</button>
         </div>
         <div class="col-2">
-            <button class="btn btn-secondary" (click)="clrPoints($event)">New Round</button>
+            <button id="new-round-button" class="btn btn-secondary" (click)="clrPoints($event)">New Round</button>
         </div>
         <div class="col-2">
             <button class="btn btn-secondary" (click)="newGame($event)">New Game</button>
@@ -16,17 +16,18 @@
     <p>
     <div class="row border-top border-left border-right rounded-top bg-light">
         <div class="col">
-           <h5>{{game.show ? 'Score: ' + average : 'Voting...' }}</h5>
+            <h5 id="status-title">{{game.show ? 'Score: ' + average : 'Voting...' }}</h5>
         </div>
     </div>
     <div class="row border-bottom border-left border-right  rounded-bottom bg-light">
-        <div class="col-1" *ngFor="let card of cards">
+        <div class="col-1" *ngFor="let card of cards; let i = index">
             <button
+                [attr.id]="'card-button-' + i"
                 class="cards btn"
                 [ngClass]="card.selected ? 'btn-info' : 'btn-outline-info'"
                 [innerHTML]="card.display">
             </button>
-            <div class="username text-center">{{card.user.name}}</div>
+            <div [attr.id]="'card-name-' + i" class="username text-center">{{card.user.name}}</div>
         </div>
     </div>
     <p>
@@ -38,6 +39,7 @@
     <div class="row border-bottom border-left border-right  rounded-bottom bg-light">
         <div class="col-1" *ngFor="let point of points; let p = index">
             <button [disabled]="game.show"
+             [attr.id]="'point-button-' + p"
              class="cards btn" 
              [ngClass]="point.selected ? 'btn-primary' : 'btn-outline-primary'"
              (click)="setPoints($event, p)">{{point.value}}</button>
