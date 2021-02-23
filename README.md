@@ -1,6 +1,6 @@
 # ScrumPoker
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.2.0.
+With my scrum team at work now all working from home, we needed a good tool to score stories.  We had trouble finding a scrum poker app that we liked.  Since I wanted to learn Firebase and brush up on the latest Angular, I wrote this app.
 
 ## Development server
 
