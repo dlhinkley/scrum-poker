@@ -34,4 +34,4 @@ jobs:
         run: npm ci && npm run build
 
       - name: Tests
-        run: npm run e2e -- --configuration=ci
+        run: npm run e2e
