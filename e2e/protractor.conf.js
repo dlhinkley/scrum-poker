@@ -15,7 +15,7 @@ exports.config = {
     ],
     capabilities: {
         chromeOptions: {
-            args: [ "--headless" ]
+            args: [  ]
         },
         browserName: 'chrome'
     },

@@ -86,8 +86,9 @@ describe('scrum poker App', () => {
         it('should show voted for both users', async () => {
              await play.clickPointButton(2); // 1 point
 
-            expect(await play.getCardButtonText(0)).toEqual(play.cardVotedText);
-            expect(await play.getCardButtonText(1)).toEqual(play.cardVotedText);
+             play.waitForCardButtonText(0, play.cardVotedText);
+             expect(await play.getCardButtonText(0)).toEqual(play.cardVotedText);
+             expect(await play.getCardButtonText(1)).toEqual(play.cardVotedText);
         });
 
         it('should display pointsfor both users', async () => {
