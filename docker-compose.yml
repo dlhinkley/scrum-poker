@@ -1,9 +1,12 @@
-version: '3.3'
+version: '3.5'
 
 services:
   node:
+    container_name: scrum-poker
+    build: .
     image: node:14
-    volumes:
-      - db_data:/var/lib/mysql
     ports:
       - "4200:4200"
+    volumes:
+      - .:/usr/src/app
+    tty: true
