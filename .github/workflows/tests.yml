@@ -27,6 +27,8 @@ jobs:
       # job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can
+      with:
+        node-version: '14.x' 
       # access it
       - uses: actions/checkout@v2
 
