@@ -8,5 +8,5 @@ services:
     ports:
       - "4200:4200"
     volumes:
-      - .:/usr/src/app
+      - .:/home/node
     tty: true
