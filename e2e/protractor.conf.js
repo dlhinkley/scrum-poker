@@ -15,7 +15,7 @@ exports.config = {
     ],
     capabilities: {
         chromeOptions: {
-            args: [  ]
+            args: ['--headless', '--no-sandbox', "--disable-dev-shm-usage"]
         },
         browserName: 'chrome'
     },
