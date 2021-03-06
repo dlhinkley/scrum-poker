@@ -31,11 +31,8 @@ jobs:
         with:
           node-version: '14.x'
 
-      - name: Install Chrome
-        run: sudo apt-get install google-chrome-stable
-
       - name: Install and Build
         run: npm ci && npm run build
 
       - name: Tests
-        run: npm run e2e
+        run: npm run e2e -- -c=ci
