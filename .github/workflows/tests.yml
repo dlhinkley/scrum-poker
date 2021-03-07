@@ -29,7 +29,7 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can
       - uses: actions/checkout@v2
         with:
-          node-version: '14.x'
+          node-version: '13.x'
 
       - name: Tests
         run: npm ci && npm run e2e
