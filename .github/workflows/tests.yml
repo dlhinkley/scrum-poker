@@ -20,16 +20,29 @@ on:
 jobs:
   # This workflow contains a single job called "build"
   test:
-    # The type of runner that the job will run on
+    name: Test app
     runs-on: ubuntu-latest
 
-      # Steps represent a sequence of tasks that will be executed as part of the
-      # job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can
-      - uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set Node Version
+        uses: actions/setup-node@v1
         with:
           node-version: '13.x'
 
-      - name: Tests
-        run: npm ci && npm run e2e-headless
+      - name: Install latest Chrome
+        run: |
+          sudo apt update
+          sudo apt --only-upgrade install google-chrome-stable
+          google-chrome --version
+
+      - name: Install dependencies
+        run: npm ci
+
+        #- name: Run unit tests
+        #run: xvfb-run npm test -- --watch=false
+
+      - name: Run integration tests
+        run: xvfb-run --server-args="-screen 0 1024x768x24" --auto-servernum npm run e2e
