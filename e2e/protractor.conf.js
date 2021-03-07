@@ -15,9 +15,9 @@ exports.config = {
     ],
     capabilities: {
         chromeOptions: {
-            args: ['--disable-dev-shm-usage'],
+            args: [],
         },
-        browserName: 'chrome'
+        browserName: 'firefox'
     },
     directConnect: true,
     SELENIUM_PROMISE_MANAGER: false,

@@ -2,7 +2,7 @@ FROM node:13
 
 WORKDIR /home/node
 
-RUN npm install -g @angular/cli 
+RUN apt-get update -q &&  apt-get install -y -qq firefox-esr
 
  
 
