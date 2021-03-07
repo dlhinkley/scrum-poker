@@ -13,9 +13,11 @@ exports.config = {
     specs: [
         './src/**/*.e2e-spec.ts'
     ],
+    chromeDriver: '/usr/bin/chromedriver',
     capabilities: {
         chromeOptions: {
-            args: ['--headless', '--no-sandbox', "--disable-dev-shm-usage"]
+            binary: '/usr/bin/chromium-browser',
+            args: [],
         },
         browserName: 'chrome'
     },
