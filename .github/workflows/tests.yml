@@ -31,7 +31,5 @@ jobs:
         with:
           node-version: '13.x'
 
-      - name: Chrome Dependencies
-        run: sudo apt-get update && sudo apt-get install -qq -y chromium-chromedriver chromium-browser
       - name: Tests
-        run: npm ci && npm run e2e
+        run: npm ci && npm run e2e-headless

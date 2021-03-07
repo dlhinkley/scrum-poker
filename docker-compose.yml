@@ -4,7 +4,6 @@ services:
   node:
     container_name: scrum-poker
     build: .
-    image: node:13
     ports:
       - "4200:4200"
     volumes:
