@@ -31,8 +31,5 @@ jobs:
         with:
           node-version: '14.x'
 
-      - name: Install and Build
-        run: npm ci && npm run build
-
       - name: Tests
-        run: npm run e2e
+        run: npm ci && npm run e2e
