@@ -42,7 +42,7 @@ jobs:
         run: npm ci
 
         #- name: Run unit tests
-        #run: xvfb-run npm test -- --watch=false
+        #run: npm test-headless
 
       - name: Run integration tests
-        run: xvfb-run --server-args="-screen 0 1024x768x24" --auto-servernum npm run e2e
+        run: npm run e2e-headless
