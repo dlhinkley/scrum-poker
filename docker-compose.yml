@@ -1,0 +1,11 @@
+version: '3.5'
+
+services:
+  node:
+    container_name: scrum-poker
+    build: .
+    ports:
+      - "4200:4200"
+    volumes:
+      - .:/home/node
+    tty: true

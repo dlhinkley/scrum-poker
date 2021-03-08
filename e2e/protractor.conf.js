@@ -8,7 +8,6 @@ const { SpecReporter, StacktraceOption } = require('jasmine-spec-reporter');
  * @type { import("protractor").Config }
  */
 exports.config = {
-    debug: true,
     allScriptsTimeout: 60000,
     specs: [
         './src/**/*.e2e-spec.ts'
