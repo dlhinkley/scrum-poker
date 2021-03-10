@@ -82,11 +82,11 @@ export class DatabaseService {
         return this.db.doc('game/' + gameId).valueChanges({idField: 'docId'})
     };
     /*
-    getUser(userId: string) {
-        return this.db.collection('user').doc(userId).get()
-    };
-    getGame(gameId: string) {
-        return this.db.collection('game').doc(gameId).get()
-    };
-    */
+       getUser(userId: string) {
+       return this.db.collection('user').doc(userId).get()
+       };
+       getGame(gameId: string) {
+       return this.db.collection('game').doc(gameId).get()
+       };
+       */
 }
