@@ -1,23 +1,25 @@
 import { TestBed } from '@angular/core/testing';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { MockProvider } from './mock.provider';
+import { FirestoreMock } from './mock.firestore';
 
-import { DatabaseService } from './database.service';
+import { Observable, BehaviorSubject } from 'rxjs';
+import { DatabaseService  } from './database.service';
 
 describe('DatabaseService', () => {
-  let service: DatabaseService;
+    let service: DatabaseService;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-	     providers: [
-          MockProvider(AngularFirestore, ['collection'])
-      ],
- 	
-		});
-    service = TestBed.inject(DatabaseService);
-  });
+    beforeEach(() => {
+        TestBed.configureTestingModule({
+            providers: [
+                { provide: AngularFirestore, useValue: FirestoreMock },
+            ],
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
+        });
+        service = TestBed.inject(DatabaseService);
+    });
+
+    it('should be created', () => {
+        expect(service).toBeTruthy();
+    });
 });
