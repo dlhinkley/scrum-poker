@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { DatabaseService } from '../database.service';
 import { GameService } from '../game.service';
+import { AuthService } from '../auth.service';
 import { User } from '../user';
 
 
@@ -12,27 +13,30 @@ import { User } from '../user';
 })
 export class AddUserComponent implements OnInit {
 
-    user: User = <User>{};
+    user: User = {} as User;
 
     constructor(
         private router: Router,
         private databaseService: DatabaseService,
-        private gameService: GameService
-    ) { 
-    }
+        private gameService: GameService,
+        private authService: AuthService,
+    ) { }
 
-    ngOnInit(): void {
-    }
-    createUser() {
+    ngOnInit(): void { }
+
+    createUser(): void {
         this.user.gameId = this.gameService.getGameId();
-        this.databaseService.createUser(this.user)
-        .then(userId => {
-            console.log('userId=', userId)
+        this.authService.loginOnce()
+        .then(() => {
+            return this.databaseService.createUser(this.user);
+        })
+        .then((userId: string) => {
+            console.log('userId=', userId);
             this.gameService.setUserId(userId);
             this.router.navigate(['play/' + this.user.gameId + '/']);
         });
     }
-    onSubmit() {
-        this.createUser()
+    onSubmit(): void {
+        this.createUser();
     }
 }

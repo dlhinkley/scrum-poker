@@ -5,6 +5,7 @@ import { mergeMap } from 'rxjs/operators'
 import { AngularFirestore } from '@angular/fire/firestore';
 import { DatabaseService } from '../database.service';
 import { GameService } from '../game.service';
+import { AuthService } from '../auth.service';
 import { Game } from '../game';
 import { Card } from '../card';
 import { User } from '../user';
@@ -30,6 +31,7 @@ export class PlayComponent implements OnInit {
         private gameService: GameService,
         private databaseService: DatabaseService,
         private firestore: AngularFirestore,
+        private authService: AuthService,
     ) { 
         console.log('play');
 
@@ -39,23 +41,23 @@ export class PlayComponent implements OnInit {
         });
     }
     updateCards() {
-       this.cards = <Card[]>[];
-       this.users.forEach(user => {
-           let display = '';
-           // In show mode, display points or X
-           if (this.game.show) {
-               display = (user.points > -1 ? user.points + '' : 'X');
-           } else {
-               display = (user.points > -1  ? '&#x2713;' : '?');
-           }
-           const selected = (user.points > -1);
-           const card = <Card> {
-               user: user,
-               display: display,
-               selected: selected,
-           }
-           this.cards.push(card);
-       });
+        this.cards = <Card[]>[];
+        this.users.forEach(user => {
+            let display = '';
+            // In show mode, display points or X
+            if (this.game.show) {
+                display = (user.points > -1 ? user.points + '' : 'X');
+            } else {
+                display = (user.points > -1  ? '&#x2713;' : '?');
+            }
+            const selected = (user.points > -1);
+            const card = <Card> {
+                user: user,
+                display: display,
+                selected: selected,
+            }
+            this.cards.push(card);
+        });
     }
     newGame(event: any) {
         this.databaseService.deleteGame(this.game.docId);
@@ -117,14 +119,14 @@ export class PlayComponent implements OnInit {
     handleUsers(users: any) {
         console.log('handleUsers'); 
         console.log('handleUsers users=', users);
-        
+
         // See if we  have a userid
         const userId = this.gameService.getUserId();
         console.log('handleUsers userId=', userId);
         console.log('handleUsers gameId=', this.game.docId);
         if (!userId) {
-             console.log('handleUsers no userId, forwarding to add user');
-              this.router.navigate(['add-user']);
+            console.log('handleUsers no userId, forwarding to add user');
+            this.router.navigate(['add-user']);
         }
 
         this.users = <User[]>users;
@@ -142,40 +144,43 @@ export class PlayComponent implements OnInit {
         if (!this.user.docId) {
             this.gameService.deleteUserId();
             console.log('user not found, navigate to add-user');
-            this.router.navigate(['add-user'])
+            this.router.navigate(['add-user']);
         }
         this.setAverage();
         this.updateCards();
     }
     ngOnInit(): void {
-        this.activatedRoute.params.subscribe(parameter => {
-            const gameId = parameter.gameId;
-            if (gameId === 'null') {
-                console.log('ngOnInit gameId is null, navigate to add game');
-                this.router.navigate(['add-game']);
+        this.authService.loginOnce()
+        .then(() => {
+            this.activatedRoute.params.subscribe(parameter => {
+                const gameId = parameter.gameId;
+                if (gameId === 'null') {
+                    console.log('ngOnInit gameId is null, navigate to add game');
+                    this.router.navigate(['add-game']);
 
-            } else {
+                } else {
 
-                console.log('ngOnInit gameId=', gameId);
+                    console.log('ngOnInit gameId=', gameId);
 
-                // If no gameid, navigate to create a game
-                // If you don't have a user id yet, navigate to create a user 
+                    // If no gameid, navigate to create a game
+                    // If you don't have a user id yet, navigate to create a user 
 
 
-                // Get the game
-                this.databaseService.watchGame(gameId)
-                .subscribe((doc: any) => {
-                    const success = this.handleGames(doc)
+                    // Get the game
+                    this.databaseService.watchGame(gameId)
+                    .subscribe((doc: any) => {
+                        const success = this.handleGames(doc);
 
-                    if (success) {
-                        // Load the users (including changes)
-                        this.databaseService.getUsers(gameId)
-                        .subscribe((doc: any) => {
-                            this.handleUsers(doc)
-                        });
-                    }
-                 });
-            }
+                        if (success) {
+                            // Load the users (including changes)
+                            this.databaseService.getUsers(gameId)
+                            .subscribe((doc: any) => {
+                                this.handleUsers(doc);
+                            });
+                        }
+                    });
+                }
+            });
         });
     }
 }
