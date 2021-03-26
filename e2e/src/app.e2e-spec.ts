@@ -22,32 +22,22 @@ describe('scrum poker App', () => {
 
         it('should ask for game name', async () => {
             await page.navigateTo();
-            expect(await addGame.getTitleText()).toEqual(addGame.title);
-        });
-
-        it('should accept game name', async () => {
+            await addGame.waitForTitle();
             await addGame.setNameText();
             await addGame.clickSubmit();
-
-            browser.sleep(7000);
-            await addUser.waitForTitle();
-
-            expect(await addUser.getTitleText()).toEqual(addUser.title);
         });
 
         it('should accept user name', async () => {
+            await addUser.waitForTitle();
             await addUser.setNameText(0);
             await addUser.clickSubmit();
-            browser.sleep(7000);
-            await play.waitForGameName();
-
-            expect(await play.getGameNameText()).toEqual(play.gameName);
         });
 
         it('should be in voting mode', async () => {
+            await play.waitForGameName();
+            expect(await play.getGameNameText()).toEqual(play.gameName);
 
             expect(await play.getStatusTitleText()).toEqual(play.statusTitleVoting);
-            browser.sleep(7000);
             await play.waitForCardButton(0);
 
             expect(await play.getCardButtonText(0)).toEqual(play.cardVotingText);
@@ -56,21 +46,19 @@ describe('scrum poker App', () => {
 
         it('should set users points', async () => {
             await play.clickPointButton(1); // 1 point
-            browser.sleep(7000);
 
             expect(await play.getCardButtonText(0)).toEqual(play.cardVotedText);
         });
 
         it('should display user points', async () => {
             await play.clickShowButton();
-            browser.sleep(7000);
             expect(await play.getShowButtonText()).toEqual(play.showTrueText);
             expect(await play.getCardButtonText(0)).toEqual('1');
         });
 
         it('should hide user points', async () => {
             await play.clickShowButton();
-            browser.sleep(7000);
+            //browser.sleep(7000);
             expect(await play.getShowButtonText()).toEqual(play.showFalseText);
             expect(await play.getCardButtonText(0)).toEqual(play.cardVotedText);
         });
@@ -79,7 +67,6 @@ describe('scrum poker App', () => {
             const url = browser.getCurrentUrl();
             browser.manage().deleteAllCookies();
             browser.navigate().refresh();
-            browser.sleep(3000);
 
             await addUser.waitForTitle();
 
@@ -92,17 +79,14 @@ describe('scrum poker App', () => {
 
         it('should show voted for both users', async () => {
              await play.clickPointButton(2); // 1 point
-             browser.sleep(7000);
 
              play.waitForCardButtonText(0, play.cardVotedText);
-             browser.sleep(7000);
              expect(await play.getCardButtonText(0)).toEqual(play.cardVotedText);
              expect(await play.getCardButtonText(1)).toEqual(play.cardVotedText);
         });
 
         it('should display pointsfor both users', async () => {
             await play.clickShowButton();
-            browser.sleep(14000);
             expect(await play.getShowButtonText()).toEqual(play.showTrueText);
             expect(await play.getCardButtonText(0)).toEqual('1');
             expect(await play.getCardButtonText(1)).toEqual('2');
@@ -110,7 +94,6 @@ describe('scrum poker App', () => {
 
         it('should start new game', async () => {
             await play.clickNewRoundButton();
-            browser.sleep(3000);
             await play.waitForCardButtonText(0, play.cardVotingText);
 
             expect(await play.getShowButtonText()).toEqual(play.showFalseText);
