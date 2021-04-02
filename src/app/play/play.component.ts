@@ -69,6 +69,14 @@ export class PlayComponent implements OnInit {
         });
     }
     setPoints(event: any, p: number): void {
+        // Deselect
+        if (this.points[p].selected) {
+            this.points[p].selected = false;
+            this.clrPoints(event);
+
+            return;
+        }
+        
         this.points.forEach(point => {
             point.selected = false;
         });
