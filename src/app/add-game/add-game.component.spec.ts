@@ -6,7 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { FirestoreMock } from '../mock.firestore';
 import { AddGameComponent } from './add-game.component';
 
-describe('AddGameComponent', () => {
+xdescribe('AddGameComponent', () => {
     let component: AddGameComponent;
     let fixture: ComponentFixture<AddGameComponent>;
 

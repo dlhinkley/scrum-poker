@@ -1,15 +1,18 @@
 import { browser, by, element } from 'protractor';
+import { AppPage } from './app.po';
 
 export class AddGamePage {
+  private page = new AppPage();
   gameName: string = "Test Game";
   title: string = 'Create Game';
+  titleId: string = 'title';
 
   async navigateTo(): Promise<unknown> {
     return browser.get(browser.baseUrl);
   }
 
-  async getTitleText(): Promise<string> {
-    return element(by.id('title')).getText();
+  async waitForTitle(): Promise<void> {
+    return this.page.waitForTextById(this.titleId, this.title);
   }
 
   async setNameText(): Promise<void> {
