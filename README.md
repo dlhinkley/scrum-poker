@@ -2,6 +2,10 @@
 
 With my scrum team at work now all working from home, we needed a good tool to score stories.  We had trouble finding a scrum poker app that we liked.  Since I wanted to learn Firebase and brush up on the latest Angular, I wrote this app.
 
+## Demo / Live App
+
+Try it out here: https://scrum-poker-5b610.web.app/
+
 ## Help Improve This App
 We'd welcome your suggestions and feedback. Please submit issues and pull requests on the GitHub repository.
 

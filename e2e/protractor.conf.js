@@ -34,5 +34,5 @@ exports.config = {
                 displayStacktrace: StacktraceOption.PRETTY
             }
         }));
-    }
+    },
 };

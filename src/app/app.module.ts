@@ -24,7 +24,7 @@ import { PlayComponent } from './play/play.component';
   ],
   imports: [
     BrowserModule,
-		FormsModule,
+    FormsModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     AngularFireModule.initializeApp(environment.firebase),
