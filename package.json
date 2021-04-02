@@ -9,6 +9,7 @@
     "test-headless": "xvfb-run ng test -- --watch=false",
     "lint": "ng lint",
     "e2e": "ng e2e",
+    "e2e:nowatch": "ng e2e --webdriver-update=false '--dev-server-target='",
     "e2e-headless": "xvfb-run --server-args='screen 0 1024x768x24' --auto-servernum ng e2e"
   },
   "private": true,
