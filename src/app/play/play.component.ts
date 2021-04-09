@@ -32,7 +32,6 @@ export class PlayComponent implements OnInit {
         private firestore: AngularFirestore,
         private authService: AuthService,
     ) {
-        console.log('play');
 
         this.defaults.forEach((v) => {
             const point = <Point> {value: v};
@@ -69,20 +68,21 @@ export class PlayComponent implements OnInit {
         });
     }
     setPoints(event: any, p: number): void {
-        // Deselect
+        let points: number;
+        // If this card previously selected, just unselect it
         if (this.points[p].selected) {
             this.points[p].selected = false;
-            this.clrPoints(event);
-
-            return;
+            points = -1;
+        } else {
+            // Otherwise clear other cards and select this one
+            this.points.forEach(point => {
+                point.selected = false;
+            });
+            this.points[p].selected = true;
+            points = this.points[p].value;
         }
-        
-        this.points.forEach(point => {
-            point.selected = false;
-        });
         this.updateCards();
-        this.points[p].selected = true;
-        this.databaseService.setPoints(this.user.docId, this.points[p].value)
+        this.databaseService.setPoints(this.user.docId, points)
     }
     clrPoints(event: any): void {
         this.databaseService.setShow(this.game.docId, false);
@@ -110,47 +110,36 @@ export class PlayComponent implements OnInit {
         });
     }
     handleGames(doc: any) {
-        console.log('handleGames'); 
         // If game found
         if (doc) {
-            console.log('handleGames doc=', doc);
             this.game = <Game>doc;
             this.gameService.setGameId(this.game.docId);
             return true;
         } else {
-            console.log('handleGames no game found, navigating to add game');
             this.router.navigate(['add-game']);
             return false;
         }
     }
     handleUsers(users: any) {
-        console.log('handleUsers'); 
-        console.log('handleUsers users=', users);
 
         // See if we  have a userid
         const userId = this.gameService.getUserId();
-        console.log('handleUsers userId=', userId);
-        console.log('handleUsers gameId=', this.game.docId);
         if (!userId) {
-            console.log('handleUsers no userId, forwarding to add user');
             this.router.navigate(['add-user']);
         }
 
         this.users = <User[]>users;
         this.user = <User>{};
         this.users.forEach(user => {
-            console.log('handleUsers user', user);
             // Save my user
             if (user.docId == userId && user.gameId === this.game.docId) {
                 this.user = <User> user;
-                console.log('handleUsers found user', user);
                 this.updatePoints();
             }
         });
         // If my user not found, add it
         if (!this.user.docId) {
             this.gameService.deleteUserId();
-            console.log('user not found, navigate to add-user');
             this.router.navigate(['add-user']);
         }
         this.setAverage();
@@ -160,12 +149,10 @@ export class PlayComponent implements OnInit {
         this.activatedRoute.params.subscribe(parameter => {
             const gameId = parameter.gameId;
             if (gameId === 'null') {
-                console.log('ngOnInit gameId is null, navigate to add game');
                 this.router.navigate(['add-game']);
 
             } else {
 
-                console.log('ngOnInit gameId=', gameId);
 
                 // If no gameid, navigate to create a game
                 // If you don't have a user id yet, navigate to create a user 
